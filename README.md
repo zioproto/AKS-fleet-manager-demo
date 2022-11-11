@@ -4,7 +4,7 @@ This is a demo of [AKS Fleet Manager](https://learn.microsoft.com/en-gb/azure/ku
 
 ## Architecture diagram
 
-[architectute_diagram](\images\architecture_diagram.png)
+![diagram](/images/architecture_diagram.png)
 
 ## Register the fleet preview feature
 
