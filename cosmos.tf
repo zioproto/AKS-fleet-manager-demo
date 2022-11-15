@@ -1,17 +1,3 @@
-# Azure provider version 
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">=3.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
 # Private DNS Zone for SQL API in both vnets
 resource "azurerm_private_dns_zone" "dns_zone_one" {
   name                = "privatelink.documents.azure.com"
