@@ -2,6 +2,10 @@
 
 This is a demo of [AKS Fleet Manager](https://learn.microsoft.com/en-gb/azure/kubernetes-fleet/)
 
+## Architecture diagram
+
+![diagram](/images/architecture_diagram.png)
+
 ## Register the fleet preview feature
 
 Run:

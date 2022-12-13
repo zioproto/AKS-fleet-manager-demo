@@ -13,7 +13,7 @@ module "vnet_one" {
 
 module "vnet_two" {
   source              = "git::https://github.com/lonegunmanb/terraform-azurerm-subnets.git"
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = azurerm_resource_group.rg_2.name
   subnets = {
     subnet0 = {
       address_prefixes = ["10.53.0.0/16"]
@@ -33,7 +33,7 @@ resource "azurerm_virtual_network_peering" "onetotwo" {
 
 resource "azurerm_virtual_network_peering" "twotoone" {
   name                      = "twotoone"
-  resource_group_name       = azurerm_resource_group.this.name
+  resource_group_name       = azurerm_resource_group.rg_2.name
   virtual_network_name      = module.vnet_two.vnet_name
   remote_virtual_network_id = module.vnet_one.vnet_id
 }
