@@ -32,5 +32,5 @@ az provider register -n Microsoft.ContainerService
 ```
 cp tfvars .tfvars # customize values if needed
 terraform init -upgrade
-terraform apply -var-file=.tfvars
+terraform apply -var-file=.tfvars -var-file=cosmos.tfvars
 ```
