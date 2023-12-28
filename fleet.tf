@@ -13,6 +13,7 @@ resource "azurerm_kubernetes_fleet_manager" "fleet" {
 # Requires https://github.com/hashicorp/terraform-provider-azurerm/issues/21468 to be fixed to drop azapi resources
 
 resource "azapi_resource" "fleetmemberone" {
+  depends_on = [ module.aksone ]
   type      = "Microsoft.ContainerService/fleets/members@2022-07-02-preview"
   name      = "contosofleetmember1"
   parent_id = azurerm_kubernetes_fleet_manager.fleet.id
@@ -24,6 +25,7 @@ resource "azapi_resource" "fleetmemberone" {
 }
 
 resource "azapi_resource" "fleetmembertwo" {
+  depends_on = [ module.akstwo ]
   type      = "Microsoft.ContainerService/fleets/members@2022-07-02-preview"
   name      = "contosofleetmember2"
   parent_id = azurerm_kubernetes_fleet_manager.fleet.id
