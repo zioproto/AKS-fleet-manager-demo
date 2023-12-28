@@ -35,3 +35,11 @@ resource "azapi_resource" "fleetmembertwo" {
     }
   })
 }
+
+data "azurerm_client_config" "current" {}
+
+resource azurerm_role_assignment "fleetmemberone" {
+  scope                = azurerm_kubernetes_fleet_manager.fleet.id
+  role_definition_name = "Azure Kubernetes Fleet Manager RBAC Cluster Admin"
+  principal_id         = data.azurerm_client_config.current.object_id
+}

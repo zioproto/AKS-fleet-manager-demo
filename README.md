@@ -16,10 +16,26 @@ terraform apply -var-file=.tfvars -var-file=cosmos.tfvars
 
 ## Role assignments
 
-TODO: this commands should be automated with Terraform
+To interact with the fleet you will use the `kubectl` command. The credentials for `kubectl` are retrieved like this:
+
+```
+az fleet get-credentials --resource-group ${GROUP} --name ${FLEET}
+```
+
+You can test the credentials are working retrieving the list of clusters in the fleet:
+```
+kubectl get memberclusters
+```
+
+This command might fail with a permission error if you had run Terraform with a different identity than the one you are using to authenticate with `kubectl`.
+
+This Terraform project will assign to the identity running Terraform the role `Azure Kubernetes Fleet Manager RBAC Cluster Admin` on the fleet resource.
+
+If you want to assign the role to a different identity you can use the following commands:
 
 ```
 export FLEET_ID=$(az fleet show -g fleet_rg_1 --name contosofleet -o json | jq -r .id)
+# This is an example, you can use any identity you want, this specific one is already assigned the role by Terraform
 export IDENTITY=$(az ad signed-in-user show --query "id" --output tsv)
 export ROLE="Azure Kubernetes Fleet Manager RBAC Cluster Admin"
 az role assignment create --role "${ROLE}" --assignee ${IDENTITY} --scope ${FLEET_ID}
