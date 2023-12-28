@@ -1,30 +1,21 @@
-# All the code in this file requires the preview feature to be enabled:
-# az feature register --namespace Microsoft.ContainerService --name FleetResourcePreview
-
-#https://learn.microsoft.com/en-us/azure/templates/microsoft.containerservice/fleets?pivots=deployment-language-terraform
-
-resource "azapi_resource" "fleet" {
-  type      = "Microsoft.ContainerService/fleets@2022-07-02-preview"
-  name      = "contosofleet"
-  location  = var.location_one
-  parent_id = azurerm_resource_group.this.id
-
-  body = jsonencode({
-    properties = {
-      hubProfile = {
-        dnsPrefix = "fleetname"
-      }
-    }
-  })
+# Requires provider version 3.30.0 or later
+# https://github.com/hashicorp/terraform-provider-azurerm/pull/19111
+resource "azurerm_kubernetes_fleet_manager" "fleet" {
+  name                = "contosofleet"
+  location            = var.location_one
+  resource_group_name = azurerm_resource_group.this.name
+  hub_profile {
+    dns_prefix = "fleetname"
+  }
 }
 
-
 #https://learn.microsoft.com/en-us/azure/templates/microsoft.containerservice/fleets/members?pivots=deployment-language-terraform
+# Requires https://github.com/hashicorp/terraform-provider-azurerm/issues/21468 to be fixed to drop azapi resources
 
 resource "azapi_resource" "fleetmemberone" {
   type      = "Microsoft.ContainerService/fleets/members@2022-07-02-preview"
   name      = "contosofleetmember1"
-  parent_id = azapi_resource.fleet.id
+  parent_id = azurerm_kubernetes_fleet_manager.fleet.id
   body = jsonencode({
     properties = {
       clusterResourceId = module.aksone.aks_id
@@ -35,7 +26,7 @@ resource "azapi_resource" "fleetmemberone" {
 resource "azapi_resource" "fleetmembertwo" {
   type      = "Microsoft.ContainerService/fleets/members@2022-07-02-preview"
   name      = "contosofleetmember2"
-  parent_id = azapi_resource.fleet.id
+  parent_id = azurerm_kubernetes_fleet_manager.fleet.id
   body = jsonencode({
     properties = {
       clusterResourceId = module.akstwo.aks_id
